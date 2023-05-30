@@ -220,69 +220,85 @@ public class DAO {
     return result;
   }
 
-  public int getThreadUsers() {
-    String sql = "select count(*) cnt from answerUser group by question_id";
-    int res = 0;
+  public List<Integer> getThreadUsers() {
+    String sql = "select question_id,count(*) cnt from answerUser group by question_id";
+    List<Integer> res = new ArrayList<>();
+    Map<Integer, Integer> users = new HashMap<>();
     try {
       Statement statement = con.createStatement();
       resultSet = statement.executeQuery(sql);
       while (resultSet.next()) {
-        res = resultSet.getInt("cnt");
+        users.put(resultSet.getInt("question_id"), resultSet.getInt("cnt"));
       }
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    sql = "select count(*) cnt from commentUser group by question_id";
+    sql = "select question_id,count(*) cnt from commentUser group by question_id";
     try {
       Statement statement = con.createStatement();
       resultSet = statement.executeQuery(sql);
       while (resultSet.next()) {
-        res += resultSet.getInt("cnt");
+        if (users.containsKey(resultSet.getInt("question_id"))) {
+          users.put(resultSet.getInt("question_id"),
+              users.get(resultSet.getInt("question_id")) + resultSet.getInt("cnt"));
+        }
+        users.put(resultSet.getInt("question_id"), resultSet.getInt("cnt"));
       }
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    sql = "select count(*) cnt from answerandcommentUser group by question_id";
+    sql = "select question_id,count(*) cnt from answerandcommentUser group by question_id";
     try {
       Statement statement = con.createStatement();
       resultSet = statement.executeQuery(sql);
       while (resultSet.next()) {
-        res -= resultSet.getInt("cnt");
+        users.put(resultSet.getInt("question_id"),
+            users.get(resultSet.getInt("question_id")) - resultSet.getInt("cnt"));
       }
     } catch (SQLException e) {
       e.printStackTrace();
     }
-
+    users.forEach((key, value) -> {
+      res.add(value);
+    });
     return res;
   }
 
-  public int getAnswerUsers() {
-    String sql = "select count(*) cnt from answerUser group by question_id";
-    int res = 0;
+  public List<Integer> getAnswerUsers() {
+    String sql = "select question_id,count(*) cnt from answerUser group by question_id";
+    List<Integer> res = new ArrayList<>();
+    Map<Integer, Integer> users = new HashMap<>();
     try {
       Statement statement = con.createStatement();
       resultSet = statement.executeQuery(sql);
       while (resultSet.next()) {
-        res = resultSet.getInt("cnt");
+        users.put(resultSet.getInt("question_id"), resultSet.getInt("cnt"));
       }
     } catch (SQLException e) {
       e.printStackTrace();
     }
+    users.forEach((key, value) -> {
+      res.add(value);
+    });
     return res;
   }
 
-  public int getCommentUsers() {
-    String sql = "select count(*) cnt from commentUser group by question_id";
-    int res = 0;
+  public List<Integer> getCommentUsers() {
+    String sql = "select question_id,count(*) cnt from commentUser group by question_id";
+    List<Integer> res = new ArrayList<>();
+    Map<Integer, Integer> users = new HashMap<>();
     try {
       Statement statement = con.createStatement();
       resultSet = statement.executeQuery(sql);
       while (resultSet.next()) {
-        res = resultSet.getInt("cnt");
+        users.put(resultSet.getInt("question_id"), resultSet.getInt("cnt"));
       }
     } catch (SQLException e) {
       e.printStackTrace();
     }
+    users.forEach((key, value) -> {
+      res.add(value);
+    });
     return res;
   }
 
@@ -308,7 +324,8 @@ public class DAO {
       Statement statement = con.createStatement();
       resultSet = statement.executeQuery(sql);
       while (resultSet.next()) {
-        res.put(resultSet.getString("tag1") + "&" + resultSet.getString("tag2"), resultSet.getInt("cnt"));
+        if (resultSet.getInt("cnt") > 0)
+          res.put(resultSet.getString("tag1") + "&" + resultSet.getString("tag2"), resultSet.getInt("cnt"));
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -331,24 +348,28 @@ public class DAO {
     return res;
   }
 
-  public Map<String, Integer> getactivity() {
-    String sql = "select owner_id,cnt from Users join (select owner_id,count(*) cnt from commentonquestions group by owner_id) X on Users.account_id=X.owner_id";
+  public Map<String, Integer> getActivity() {
+    String sql = "select display_name,cnt from Users join (select owner_id,count(*) cnt from commentonquestions group by owner_id) X on Users.account_id=X.owner_id";
     Map<String, Integer> res = new HashMap<>();
     try {
       Statement statement = con.createStatement();
       resultSet = statement.executeQuery(sql);
       while (resultSet.next()) {
-        res.put(resultSet.getString("owner_id"), resultSet.getInt("cnt"));
+        res.put(resultSet.getString("display_name"), resultSet.getInt("cnt"));
       }
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    sql = "select owner_id,cnt from Users join (select owner_id,count(*) cnt from answeronquestions group by owner_id) X on Users.account_id=X.owner_id";
+    sql = "select display_name,cnt from Users join (select owner_id,count(*) cnt from answeronquestions group by owner_id) X on Users.account_id=X.owner_id";
     try {
       Statement statement = con.createStatement();
       resultSet = statement.executeQuery(sql);
       while (resultSet.next()) {
-        res.put(resultSet.getString("owner_id"), res.get(resultSet.getString("owner_id")) + resultSet.getInt("cnt"));
+        if (!res.containsKey(resultSet.getString("display_name")))
+          res.put(resultSet.getString("display_name"), resultSet.getInt("cnt"));
+        else
+          res.put(resultSet.getString("display_name"),
+              res.get(resultSet.getString("display_name")) + resultSet.getInt("cnt"));
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -363,7 +384,8 @@ public class DAO {
       Statement statement = con.createStatement();
       resultSet = statement.executeQuery(sql);
       while (resultSet.next()) {
-        res.put(resultSet.getString("tag1") + "&" + resultSet.getString("tag2"), resultSet.getInt("cnt"));
+        if (resultSet.getInt("cnt") > 0)
+          res.put(resultSet.getString("tag1") + "&" + resultSet.getString("tag2"), resultSet.getInt("cnt"));
       }
     } catch (SQLException e) {
       e.printStackTrace();

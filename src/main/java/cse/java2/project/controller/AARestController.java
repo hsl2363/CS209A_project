@@ -30,12 +30,14 @@ public class AARestController {
   private WebService service;
 
   private class AQ {
-    private int solved_question;
-    private int unsolved_question;
+    public int solved_question;
+    public int unsolved_question;
+    public double percentage;
 
     public AQ(int a, int tot) {
       this.solved_question = a;
       this.unsolved_question = tot - a;
+      this.percentage = (double) a / tot;
     }
   }
 
@@ -48,12 +50,14 @@ public class AARestController {
   }
 
   private class NACUQ {
-    private int nacu_question;
-    private int acu_question;
+    public int nacu_question;
+    public int acu_question;
+    public double percentage;
 
     public NACUQ(int a, int tot) {
       this.nacu_question = a;
       this.acu_question = tot - a;
+      this.percentage = (double) a / tot;
     }
   }
 
@@ -66,10 +70,22 @@ public class AARestController {
   }
 
   private class Distribution {
-    private Map<String, Integer> num;
+    public Map<String, Integer> num;
 
     public Distribution(List<Integer> info) {
       num = new HashMap<>();
+      num.put("15min", 0);
+      num.put("30min", 0);
+      num.put("1hour", 0);
+      num.put("5hour", 0);
+      num.put("12hour", 0);
+      num.put("24hour", 0);
+      num.put("3days", 0);
+      num.put("1weeks", 0);
+      num.put("1month", 0);
+      num.put("6month", 0);
+      num.put("1year", 0);
+      num.put("more", 0);
       for (int i = 0; i < info.size(); i++) {
         int tim = info.get(i);
         if (tim <= 15 * 60)
@@ -83,7 +99,7 @@ public class AARestController {
         else if (tim <= 12 * 60 * 60)
           num.put("12hour", num.get("12hour") + 1);
         else if (tim <= 24 * 60 * 60)
-          num.put("5hour", num.get("24hour") + 1);
+          num.put("24hour", num.get("24hour") + 1);
         else if (tim <= 3 * 24 * 60 * 60)
           num.put("3days", num.get("3days") + 1);
         else if (tim <= 7 * 24 * 60 * 60)

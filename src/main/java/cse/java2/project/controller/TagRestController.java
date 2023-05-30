@@ -29,16 +29,6 @@ public class TagRestController {
   @Autowired
   private WebService service;
 
-  private class AQ {
-    private int solved_question;
-    private int unsolved_question;
-
-    public AQ(int a, int tot) {
-      this.solved_question = a;
-      this.unsolved_question = tot - a;
-    }
-  }
-
   @GetMapping("/cnt")
   public Map<String, Integer> Tags() {
     Map<String, Integer> info = service.getTags();

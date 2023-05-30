@@ -29,12 +29,14 @@ public class NARestController {
   private WebService service;
 
   private class AQ {
-    private int answered_question;
-    private int unanswered_question;
+    public int answered_question;
+    public int unanswered_question;
+    public double percentage;
 
     public AQ(int a, int tot) {
       this.answered_question = a;
       this.unanswered_question = tot - a;
+      this.percentage = (double) a / tot;
     }
   }
 
@@ -42,19 +44,18 @@ public class NARestController {
   public AQ Answered_Question() {
     int[] info = service.getAnsweredQuestionCnt();
     AQ res = new AQ(info[0], info[1]);
-    // System.out.println(res.answered_question);
     return res;
   }
 
   private class Distribution {
 
-    private double avg;
-    private int max;
-    private Map<Integer, Integer> num;
+    public double avg;
+    public int max;
+    public Map<Integer, Integer> num;
 
     public Distribution(List<Integer> info) {
       num = new HashMap<>();
-      this.avg = 0;
+      this.avg = 0; 
       this.max = 0;
       for (int i = 0; i < info.size(); i++) {
         int cnt = info.get(i);

@@ -34,20 +34,20 @@ public class WebService {
     return dao.getNotACMostUpvoteQuestionCnt();
   }
 
-  public int getThreadUsers() {
+  public List<Integer> getThreadUsers() {
     return dao.getThreadUsers();
   }
 
-  public int getAnswerUsers() {
+  public List<Integer> getAnswerUsers() {
     return dao.getAnswerUsers();
   }
 
-  public int getCommentUsers() {
+  public List<Integer> getCommentUsers() {
     return dao.getCommentUsers();
   }
 
-  public Map<String, Integer> getactivity() {
-    return dao.getactivity();
+  public Map<String, Integer> getActivity() {
+    return dao.getActivity();
   }
 
   public List<Integer> gettimeDistribution() {
