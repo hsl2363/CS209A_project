@@ -28,35 +28,70 @@ public class UserRestController {
   @Autowired
   private WebService service;
 
-  @GetMapping("/threads")
-  public int Thread() {
-    int info = service.getThreadUsers();
-    // System.out.println(res.answered_question);
-    return info;
+  private class Distribution {
+    public Map<Integer, Integer> num;
+
+    public Distribution(List<Integer> info) {
+      num = new HashMap<>();
+      for (int i = 0; i < info.size(); i++) {
+        int cnt = info.get(i);
+        if (num.containsKey(cnt))
+          num.put(cnt, num.get(cnt) + 1);
+        else
+          num.put(cnt, 1);
+      }
+    }
   }
 
-  private class Users {
-    private int comment_users;
-    private int answer_users;
+  @GetMapping("/threads")
+  public Distribution Thread() {
+    List<Integer> info = service.getThreadUsers();
+    Distribution res = new Distribution(info);
+    // System.out.println(res.answered_question);
+    return res;
+  }
 
-    public Users(int a, int c) {
-      this.comment_users = c;
-      this.answer_users = a;
+  private class Distribution2 {
+    public Map<Integer, Integer> answerUsers;
+    public Map<Integer, Integer> commentUsers;
+
+    public Distribution2(List<Integer> A, List<Integer> C) {
+      answerUsers = new HashMap<>();
+      commentUsers = new HashMap<>();
+      for (int i = 0; i < A.size(); i++) {
+        int cnt = A.get(i);
+        if (answerUsers.containsKey(cnt))
+          answerUsers.put(cnt, answerUsers.get(cnt) + 1);
+        else
+          answerUsers.put(cnt, 1);
+      }
+      for (int i = 0; i < C.size(); i++) {
+        int cnt = C.get(i);
+        if (commentUsers.containsKey(cnt))
+          commentUsers.put(cnt, commentUsers.get(cnt) + 1);
+        else
+          commentUsers.put(cnt, 1);
+      }
     }
   }
 
   @GetMapping("/answercomment")
-  public Users AnswerComment() {
-    Users info = new Users(service.getAnswerUsers(), service.getCommentUsers());
-    // System.out.println(res.answered_question);
-    return info;
+  public Distribution2 AnswerComment() {
+    List<Integer> answerusers = service.getAnswerUsers();
+    List<Integer> commentusers = service.getAnswerUsers();
+    Distribution2 res = new Distribution2(answerusers, commentusers);
+    return res;
   }
 
   @GetMapping("/activity")
   public Map<String, Integer> Activity() {
-    Map<String, Integer> info = service.getactivity();
-    // System.out.println(res.answered_question);
-    return info;
+    Map<String, Integer> info = service.getActivity();
+    Map<String, Integer> filtered = new HashMap<>();
+    info.forEach((key, value) -> {
+      if (value > 1)
+        filtered.put(key, value);
+    });
+    return filtered;
   }
 
 }
