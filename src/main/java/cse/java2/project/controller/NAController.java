@@ -1,15 +1,13 @@
 package cse.java2.project.controller;
 
+import cse.java2.project.service.WebService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import cse.java2.project.service.WebService;
 
 @Controller
 @RequestMapping("/numberofanswer")
@@ -60,13 +58,15 @@ public class NAController {
       this.max = 0;
       for (int i = 0; i < info.size(); i++) {
         int cnt = info.get(i);
-        if (cnt > this.max)
+        if (cnt > this.max) {
           this.max = cnt;
+        }
         this.avg += cnt;
-        if (num.containsKey(cnt))
+        if (num.containsKey(cnt)) {
           num.put(cnt, num.get(cnt) + 1);
-        else
+        } else {
           num.put(cnt, 1);
+        }
       }
       this.avg /= info.size();
     }

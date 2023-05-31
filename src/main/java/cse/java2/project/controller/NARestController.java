@@ -1,15 +1,13 @@
 package cse.java2.project.controller;
 
+import cse.java2.project.service.WebService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import cse.java2.project.service.WebService;
 
 @RestController
 @RequestMapping("/api/numberofanswer")
@@ -55,17 +53,19 @@ public class NARestController {
 
     public Distribution(List<Integer> info) {
       num = new HashMap<>();
-      this.avg = 0; 
+      this.avg = 0;
       this.max = 0;
       for (int i = 0; i < info.size(); i++) {
         int cnt = info.get(i);
-        if (cnt > this.max)
+        if (cnt > this.max) {
           this.max = cnt;
+        }
         this.avg += cnt;
-        if (num.containsKey(cnt))
+        if (num.containsKey(cnt)) {
           num.put(cnt, num.get(cnt) + 1);
-        else
+        } else {
           num.put(cnt, 1);
+        }
       }
       this.avg /= info.size();
     }

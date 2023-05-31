@@ -1,16 +1,14 @@
 package cse.java2.project.controller;
 
+import cse.java2.project.service.WebService;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import cse.java2.project.service.WebService;
 
 @Controller
 @RequestMapping("/acceptedanswer")
@@ -21,6 +19,7 @@ public class AAController {
    * In this demo, you can visit localhost:9090 or localhost:9090/demo to see the
    * result.
    * 
+
    * @return the name of the view to be rendered
    *         You can find the static HTML file in
    *         src/main/resources/templates/demo.html

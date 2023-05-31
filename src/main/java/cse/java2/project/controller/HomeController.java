@@ -1,9 +1,9 @@
 package cse.java2.project.controller;
 
+import cse.java2.project.service.WebService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import cse.java2.project.service.WebService;
 
 @Controller
 public class HomeController {

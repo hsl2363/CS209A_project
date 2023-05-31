@@ -1,14 +1,12 @@
 package cse.java2.project.repository;
 
+import cse.java2.project.model.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.stereotype.Repository;
-
-import cse.java2.project.model.*;
 
 @Repository
 public class DAO {
@@ -259,8 +257,9 @@ public class DAO {
       e.printStackTrace();
     }
     users.forEach((key, value) -> {
-      if (value > 0)
+      if (value > 0) {
         res.add(value);
+      }
     });
     return res;
   }
@@ -325,8 +324,9 @@ public class DAO {
       Statement statement = con.createStatement();
       resultSet = statement.executeQuery(sql);
       while (resultSet.next()) {
-        if (resultSet.getInt("cnt") > 0)
+        if (resultSet.getInt("cnt") > 0) {
           res.put(resultSet.getString("tag1") + "&" + resultSet.getString("tag2"), resultSet.getInt("cnt"));
+        }
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -366,11 +366,12 @@ public class DAO {
       Statement statement = con.createStatement();
       resultSet = statement.executeQuery(sql);
       while (resultSet.next()) {
-        if (!res.containsKey(resultSet.getString("display_name")))
+        if (!res.containsKey(resultSet.getString("display_name"))) {
           res.put(resultSet.getString("display_name"), resultSet.getInt("cnt"));
-        else
+        } else {
           res.put(resultSet.getString("display_name"),
               res.get(resultSet.getString("display_name")) + resultSet.getInt("cnt"));
+        }
       }
     } catch (SQLException e) {
       e.printStackTrace();

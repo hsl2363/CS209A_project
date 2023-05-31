@@ -1,15 +1,13 @@
 package cse.java2.project.controller;
 
+import cse.java2.project.service.WebService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import cse.java2.project.service.WebService;
 
 @RestController
 @RequestMapping("/api/users")
@@ -35,10 +33,11 @@ public class UserRestController {
       num = new HashMap<>();
       for (int i = 0; i < info.size(); i++) {
         int cnt = info.get(i);
-        if (num.containsKey(cnt))
+        if (num.containsKey(cnt)) {
           num.put(cnt, num.get(cnt) + 1);
-        else
+        } else {
           num.put(cnt, 1);
+        }
       }
     }
   }
@@ -60,17 +59,19 @@ public class UserRestController {
       commentUsers = new HashMap<>();
       for (int i = 0; i < A.size(); i++) {
         int cnt = A.get(i);
-        if (answerUsers.containsKey(cnt))
+        if (answerUsers.containsKey(cnt)) {
           answerUsers.put(cnt, answerUsers.get(cnt) + 1);
-        else
+        } else {
           answerUsers.put(cnt, 1);
+        }
       }
       for (int i = 0; i < C.size(); i++) {
         int cnt = C.get(i);
-        if (commentUsers.containsKey(cnt))
+        if (commentUsers.containsKey(cnt)) {
           commentUsers.put(cnt, commentUsers.get(cnt) + 1);
-        else
+        } else {
           commentUsers.put(cnt, 1);
+        }
       }
     }
   }
@@ -88,8 +89,9 @@ public class UserRestController {
     Map<String, Integer> info = service.getActivity();
     Map<String, Integer> filtered = new HashMap<>();
     info.forEach((key, value) -> {
-      if (value > 1)
+      if (value > 1) {
         filtered.put(key, value);
+      }
     });
     return filtered;
   }
