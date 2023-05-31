@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>Users of Threads</title>
+		<script src="/js/echarts.min.js"></script>
+		<style>
+			#chartContainer{
+				width: 800px;
+				height: 600px;
+			}
+		</style>
+		<!-- <script src="https://cdn.jsdelivr.net/npm/echarts-wordcloud@2/dist/echarts-wordcloud.min.js"></script> -->
+	</head>
+	<body style="text-align: center">
+		<h1>Users of Threads</h1>
+		<div id="chartContainer"></div>
+	</body>
+	<script th:inline="javascript">
+		var echart = echarts.init(document.getElementById("chartContainer"))
+
+		var Data = /*[[${thread}]]*/ {};
+
+		// var chartData = [];
+		// for (const key in Data) {
+	    //     chartData.push({
+	    //         name: key,
+	    //         value: Data[key]
+	    //     });
+	    // }
+
+		var option = {
+		    title: {
+		      text: 'Users of Threads'
+		    },
+		    tooltip: {
+	            trigger: 'item'
+	        },
+		    xAxis: {
+		      data: Object.keys(Data)
+		    },
+		    yAxis: {},
+		    series: [{
+		      name: 'User number',
+		      type: 'bar',
+		      data: Object.values(Data)
+		    }]
+		  };
+		echart.setOption(option);
+	</script>
+</html>

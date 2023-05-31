@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Question with Most Upvote Answer not Accpeted</title>
+    <!--  Import echarts lib by CDN, you can also import from local files  -->
+    <script src='https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts-wordcloud@2/dist/echarts-wordcloud.min.js"></script>
+</head>
+<body style="text-align: center">
+<h1>Question with Most Upvote Answer not Accpeted</h1>
+<div style="width: 100%;height: 60vh;display: flex">
+    <div style="width: 100%;height: 100%">
+        <div id="piechart" style="height: 100%;width: 100%"></div>
+    </div>
+</div>
+</body>
+
+<script th:inline="javascript">
+    var chart = echarts.init(document.getElementById('piechart'));
+    var Data = {"Most Upvote Answer not Accpeted": [[${res.nacu_question}]],"Most Upvote Answer Accpeted" : [[${res.acu_question}]]};
+    let Option = {
+        title: {
+            text: 'Percentage: ' + [[${res.percentage}]],
+            textStyle: {
+                fontStyle: 'oblique',
+                fontSize: 20,
+                color: '#4cc9f0'
+            },
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item'
+        },
+        grid: {
+            width: '100%',
+            height: '100%'
+        },
+        legend: {
+            orient: 'vertical',
+            textStyle: {
+                fontSize: 20,
+                color: 'black'
+            },
+            right: 'center',
+            bottom: 'bottom',
+        },
+        series: [
+            {
+                name: 'Question Count',
+                type: 'pie',
+                radius: '80%',
+                data: Object.entries(Data).map(([key, value]) => ({ name: key, value: value })),
+                // data: Data,
+                color: ['#9400D3', '#FF00FF', '#4169E1', '#3CB371',
+                    '#FFA500', '#FF7F50', '#DC143C', '#000080'],
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0.1, 0.2, 0, 0.5)',
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        label: {
+                            textStyle: {
+                                fontSize: 12,
+                                color: 'black'
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    };
+    chart.setOption(Option);
+</script>
+
+</html>

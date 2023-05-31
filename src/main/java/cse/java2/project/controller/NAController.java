@@ -5,15 +5,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import cse.java2.project.service.WebService;
 
-@RestController
-@RequestMapping("/api/numberofanswer")
-public class NARestController {
+@Controller
+@RequestMapping("/numberofanswer")
+public class NAController {
 
   /**
    * This method is called when the user requests the root URL ("/") or "/demo".
@@ -40,11 +40,12 @@ public class NARestController {
     }
   }
 
-  @GetMapping("/answered_question")
-  public AQ Answered_Question() {
+  @RequestMapping("/answered_question")
+  public String Answered_Question(Model model) {
     int[] info = service.getAnsweredQuestionCnt();
     AQ res = new AQ(info[0], info[1]);
-    return res;
+    model.addAttribute("res", res);
+    return "answered_question";
   }
 
   private class Distribution {
@@ -55,7 +56,7 @@ public class NARestController {
 
     public Distribution(List<Integer> info) {
       num = new HashMap<>();
-      this.avg = 0; 
+      this.avg = 0;
       this.max = 0;
       for (int i = 0; i < info.size(); i++) {
         int cnt = info.get(i);
@@ -71,11 +72,12 @@ public class NARestController {
     }
   }
 
-  @GetMapping("/answer_distribution")
-  public Distribution distribution() {
+  @RequestMapping("/answer_distribution")
+  public String distribution(Model model) {
     List<Integer> info = service.getAnswerDistrubution();
     Distribution res = new Distribution(info);
-    return res;
+    model.addAttribute("res", res);
+    return "Answer_distribution";
   }
 
 }

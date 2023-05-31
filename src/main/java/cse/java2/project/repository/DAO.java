@@ -259,7 +259,8 @@ public class DAO {
       e.printStackTrace();
     }
     users.forEach((key, value) -> {
-      res.add(value);
+      if (value > 0)
+        res.add(value);
     });
     return res;
   }

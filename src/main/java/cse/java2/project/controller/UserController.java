@@ -5,15 +5,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import cse.java2.project.service.WebService;
 
-@RestController
-@RequestMapping("/api/users")
-public class UserRestController {
+@Controller
+@RequestMapping("/users")
+public class UserController {
 
   /**
    * This method is called when the user requests the root URL ("/") or "/demo".
@@ -43,12 +43,12 @@ public class UserRestController {
     }
   }
 
-  @GetMapping("/threads")
-  public Distribution Thread() {
+  @RequestMapping("/threads")
+  public String Thread(Model model) {
     List<Integer> info = service.getThreadUsers();
-    Distribution res = new Distribution(info);
+    model.addAttribute("thread", (new Distribution(info)).num);
     // System.out.println(res.answered_question);
-    return res;
+    return "thread";
   }
 
   private class Distribution2 {
@@ -75,23 +75,26 @@ public class UserRestController {
     }
   }
 
-  @GetMapping("/answercomment")
-  public Distribution2 AnswerComment() {
+  @RequestMapping("/answercomment")
+  public String AnswerComment(Model model) {
     List<Integer> answerusers = service.getAnswerUsers();
     List<Integer> commentusers = service.getCommentUsers();
-    Distribution2 res = new Distribution2(answerusers, commentusers);
-    return res;
+    Distribution2 dist = new Distribution2(answerusers, commentusers);
+    model.addAttribute("answer", dist.answerUsers);
+    model.addAttribute("comment", dist.commentUsers);
+    return "answercomment";
   }
 
-  @GetMapping("/activity")
-  public Map<String, Integer> Activity() {
+  @RequestMapping("/activity")
+  public String Activity(Model model) {
     Map<String, Integer> info = service.getActivity();
     Map<String, Integer> filtered = new HashMap<>();
     info.forEach((key, value) -> {
       if (value > 1)
         filtered.put(key, value);
     });
-    return filtered;
+    model.addAttribute("users", filtered);
+    return "activity";
   }
 
 }

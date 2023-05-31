@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>Java2 Project Demo</title>
+		<script src="/js/echarts.min.js"></script>
+		<!-- <script src="https://cdn.jsdelivr.net/npm/echarts-wordcloud@2/dist/echarts-wordcloud.min.js"></script> -->
+	</head>
+	<body style="text-align: center">
+		<h1>Answered and commented Users of Threads</h1>
+		<div style="width: 100%;height: 60vh;display: flex">
+			<div style="width: 100%;height: 100%">
+				<div id="answered" style="height: 100%;width: 100%"></div>
+			</div>
+			<div style="width: 60%;height: 100%">
+				<div id="commented" style="height: 100%;width: 100%"></div>
+			</div>
+		</div>
+		<div id="chartContainer"></div>
+	</body>
+	<script th:inline="javascript">
+		var answer = echarts.init(document.getElementById("answered"))
+		var comment = echarts.init(document.getElementById("commented"))
+
+		var Answer = /*[[${answer}]]*/ {};
+		var Comment = /*[[${comment}]]*/ {};
+
+		// var chartData = [];
+		// for (const key in Data) {
+	    //     chartData.push({
+	    //         name: key,
+	    //         value: Data[key]
+	    //     });
+	    // }
+
+		var option1 = {
+		    title: {
+		      text: 'Answered Users'
+		    },
+		    tooltip: {
+	            trigger: 'item'
+	        },
+		    xAxis: {
+		      data: Object.keys(Answer)
+		    },
+		    yAxis: {},
+		    series: [{
+		      name: 'User number',
+		      type: 'bar',
+		      data: Object.values(Answer)
+		    }]
+		  };
+		answer.setOption(option1);
+		var option2 = {
+		    title: {
+		      text: 'Commented Users'
+		    },
+		    tooltip: {
+	            trigger: 'item'
+	        },
+		    xAxis: {
+		      data: Object.keys(Comment)
+		    },
+		    yAxis: {},
+		    series: [{
+		      name: 'User number',
+		      type: 'bar',
+		      data: Object.values(Comment)
+		    }]
+		  };
+		comment.setOption(option2);
+	</script>
+</html>
